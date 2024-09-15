@@ -1,16 +1,16 @@
 CREATE TABLE plannedHours (
-    id INT PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     dayOfWeek INT NOT NULL,
     plannedHours INT NOT NULL
 );
 
 CREATE TABLE sites (
-    id INT PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL
 );
 
 CREATE TABLE trackedHours (
-    id INT PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     startedAt INT NOT NULL,
     stoppedAt INT NOT NULL,
     site INT NOT NULL,

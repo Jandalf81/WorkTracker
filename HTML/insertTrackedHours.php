@@ -14,6 +14,8 @@
         echo $stmt->getSQL(true) . $rn . "<br />";
 
         $result = $stmt->execute();
+
+        header('Location: index.php');
     } catch (Exception $e) {
         echo 'Caught exception: ' . $e->getMessage();
     }
