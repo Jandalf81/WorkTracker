@@ -69,6 +69,7 @@
                     <th>IST</th>
                     <th>SOLL</th>
                     <th>Differenz</th>
+                    <th>Anzeigen</th>
                 </tr>
 <?php
     $results = $db->query('SELECT * FROM v_TrackedHours ORDER BY date DESC');
@@ -87,6 +88,7 @@
         echo "\t\t\t\t\t<td>" . $row['trackedHoursPerDay'] . "</td>" . $rn;
         echo "\t\t\t\t\t<td>" . $row['plannedHours'] . "</td>" . $rn;
         echo "\t\t\t\t\t<td>" . 'DIFF' . "</td>" . $rn;
+        echo "\t\t\t\t\t<td><a href=\"showTrackedHours.php?date=" . $row['date'] . "\">➡️</a></td>" . $rn;
         echo "\t\t\t\t</tr>" . $rn;
     }
 ?>

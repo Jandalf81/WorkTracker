@@ -10,8 +10,8 @@
         $stmt->bindValue(':site', $_POST['site'], SQLITE3_INTEGER);
         $stmt->bindValue(':createdAt', $_POST['toDate'] . ' ' . $_POST['toTime'], SQLITE3_TEXT);
 
-        echo $stmt->getSQL(false) . $rn . "<br />";
-        echo $stmt->getSQL(true) . $rn . "<br />";
+        #echo $stmt->getSQL($expanded = false) . $rn . "<br />";
+        #echo $stmt->getSQL($expanded = true) . $rn . "<br />";
 
         $result = $stmt->execute();
 
