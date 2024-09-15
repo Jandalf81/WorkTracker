@@ -3,7 +3,7 @@
     $rn = "\r\n";
 
     # define path to database
-    $db = new SQLite3('/home/pi/TimeTracker/db.sqlite');
+    $db = new SQLite3('/home/pi/WorkTracker/db.sqlite');
 ?>
 <html lang="de">
     <head charset="utf-8">
