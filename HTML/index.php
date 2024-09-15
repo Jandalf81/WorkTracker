@@ -1,18 +1,63 @@
 <!DOCTYPE html>
 <?php
-    $rn = "\r\n";
-
-    # define path to database
-    $db = new SQLite3('/home/pi/WorkTracker/db.sqlite');
+    require_once('_defaults.php');
 ?>
 <html lang="de">
     <head charset="utf-8">
-        <title>TimeTracker</title>
+        <title>WorkTracker</title>
         <link rel="stylesheet" href="generic.css">
     </head>
     <body>
         <div>
             <h1>Aktuelle Zeiterfassung</h1>
+            <form action="insertTrackedHours.php" method="POST">
+                <table>
+                    <tr>
+                        <td>Beginn:</td>
+                        <td>
+                            <label for="fromDate">📅</label>
+                            <input type="date" name="fromDate" id="fromDate" value="<?php echo date("Y-m-d"); ?>" required>
+                        </td>
+                        <td>
+                            <label for="fromTime">🕑</label>
+                            <input type="time" name="fromTime" id="fromTime" value="<?php echo date("H:i:s"); ?>" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ende:</td>
+                        <td>
+                            <label for="toDate">📅</label>
+                            <input type="date" name="toDate" id="toDate" value="<?php echo date("Y-m-d"); ?>" required>
+                        </td>
+                        <td>
+                            <label for="toTime">🕑</label>
+                            <input type="time" name="toTime" id="toTime" value="<?php echo date("H:i:s"); ?>" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ort:</td>
+                        <td>
+                            <label for="site">🗺️</label>
+                            <select name="site" id="site">
+<?php
+    $results = $db->query('SELECT * FROM sites ORDER BY name');
+    while ($row = $results->fetchArray()) {
+        echo "\t\t\t\t\t\t\t\t<option value=\"" . $row['id'] . "\">" . $row['name'] . "</option>" . $rn;
+    }
+?>
+                            </select>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="submit" value=" 💾 Speichern">
+                        </td>
+                        <td></td>
+                    </tr>                
+                </table>
+            </form>
         </div>
         <div>
             <h1>Zeiterfassungen der letzten 30 Tage</h1>
@@ -29,10 +74,10 @@
     $results = $db->query('SELECT * FROM v_TrackedHours ORDER BY date DESC');
     while ($row = $results->fetchArray()) {
         # print PHP object to browser's console
-        echo '<script>';
-        echo 'var row = ' . json_encode($row) . ';';
-        echo 'console.log(row);';
-        echo '</script>';
+        #echo '<script>';
+        #echo 'var row = ' . json_encode($row) . ';';
+        #echo 'console.log(row);';
+        #echo '</script>';
 
 
         echo "\t\t\t\t<tr>" . $rn;
