@@ -9,13 +9,19 @@ CREATE TABLE sites (
     name TEXT NOT NULL
 );
 
+CREATE TABLE workType (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+);
+
 CREATE TABLE trackedHours (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    startedAt INT NOT NULL,
-    stoppedAt INT NOT NULL,
+    startedAt TEXT NOT NULL,
+    stoppedAt TEXT NOT NULL,
     site INT NOT NULL,
-    createdAt INT NOT NULL,
-    updatedAt INT,
+    workType INT NOT NULL,
+    createdAt TEXT NOT NULL,
+    updatedAt TEXT,
 
     FOREIGN KEY(site) REFERENCES sites(id)
 );

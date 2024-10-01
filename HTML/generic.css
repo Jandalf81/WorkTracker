@@ -1,0 +1,17 @@
+::backdrop {
+    background-color: grey;
+    opacity: 0.75;
+}
+
+.modalDialog {
+    width: 80%;
+    text-align: center;
+}
+
+.modalDialog > button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: block;
+    width: 130px;
+    margin: 10px auto 0px auto;
+}

@@ -6,9 +6,11 @@
     <head charset="utf-8">
         <title>WorkTracker</title>
         <link rel="stylesheet" href="generic.css">
+        <script type="text/javascript" src="functions.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
     <body>
-        <div>
+        <div class="test">
             <h1>Aktuelle Zeiterfassung</h1>
             <form action="insertTrackedHours.php" method="POST">
                 <table>
@@ -50,12 +52,44 @@
                         <td></td>
                     </tr>
                     <tr>
+                        <td>Typ:</td>
+                        <td>
+                            <label for="workType">❓</label>
+                            <select name="workType" id="workType">
+<?php
+    $results = $db->query('SELECT * FROM workType ORDER BY name');
+    while ($row = $results->fetchArray()) {
+        echo "\t\t\t\t\t\t\t\t<option value=\"" . $row['id'] . "\">" . $row['name'] . "</option>" . $rn;
+    }
+?>
+                            </select>
+                        </td>
+                        <td></td>
+                    </tr>
+ <!--                   
+                    <tr>
                         <td></td>
                         <td>
                             <input type="submit" value=" 💾 Speichern">
                         </td>
                         <td></td>
-                    </tr>                
+                    </tr>
+-->
+                    <tr>
+                        <td></td>
+                        <td>
+                            <!-- call JavaScript function with parameters -->
+                            <input type="button" value=" 💾 Speichern" onClick="insertTrackedHours(
+                                document.getElementById('fromDate').value,
+                                document.getElementById('fromTime').value,
+                                document.getElementById('toDate').value,
+                                document.getElementById('toTime').value,
+                                document.getElementById('site').value,
+                                document.getElementById('workType').value
+                            );">
+                        </td>
+                        <td></td>
+                    </tr>
                 </table>
             </form>
         </div>
@@ -94,5 +128,9 @@
 ?>
             </table>
         </div>
+        <dialog id="modalDialog" name="modalDialog" class="modalDialog">
+            <div id="modalDialogText" name="modalDialogText"></div>
+            <button autofocus onClick="modalDialog.close();">Close</button>
+        </dialog>
     </body>
 </html>
