@@ -5,7 +5,7 @@
     $rn = "\r\n";
 
     # define path to database
-    $db = new SQLite3('/home/pi/WorkTracker/WorkTracker.sqlite', SQLITE3_OPEN_READWRITE);
+    $db = new SQLite3('/srv/WorkTracker/WorkTracker.sqlite', SQLITE3_OPEN_READWRITE);
 
     # enable error messages for SQLite errors
     $db->enableExceptions(true);

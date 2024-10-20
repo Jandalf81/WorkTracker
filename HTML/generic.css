@@ -1,17 +1,57 @@
-::backdrop {
-    background-color: grey;
-    opacity: 0.75;
+/* Forms */
+form select {
+    width: 500px;
 }
 
-.modalDialog {
-    width: 80%;
-    text-align: center;
+form input[type=text],
+form input[type=datetime-local] {
+    width: 492px;
 }
 
-.modalDialog > button {
-    padding: 10px 20px;
-    border-radius: 5px;
-    display: block;
-    width: 130px;
-    margin: 10px auto 0px auto;
+form table, 
+form th, 
+form td, 
+form tr:nth-child(even), 
+form tr:hover {
+    border: none;
+    background-color: transparent;
+}
+
+form input[type=button] {
+    padding: 2px;
+    background-color: #79d4f8;
+}
+
+/* Tables */
+table, 
+th, 
+td {
+    border: 1px solid #000000;
+    padding: 2px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    color: #ffffff;
+    background-color: #0099d4;
+    height: 24px;
+}
+
+tr:nth-child(even) {
+    background-color: #79d4f8;
+}
+
+tr:hover {
+    background-color: #d4ad00;
+}
+
+table .positive {
+    color: #00ff00;
+}
+
+table .negative {
+    color: #ff0000;
 }

@@ -6,7 +6,11 @@
     <head charset="utf-8">
         <title>WorkTracker</title>
         <link rel="stylesheet" href="generic.css">
-        <script type="text/javascript" src="functions.js"></script>
+        <script type="text/javascript" src="functions/_genericFunctions.js"></script>
+        <script type="text/javascript" src="functions/getOptionsSite.js"></script>
+        <script type="text/javascript" src="functions/getOptionsWorkType.js"></script>
+        <script type="text/javascript" src="functions/insertSession.js"></script>
+        <script type="text/javascript" src="functions/getLatestSessionsGroupedByDay.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
     <body>
@@ -17,36 +21,26 @@
                     <tr>
                         <td>Beginn:</td>
                         <td>
-                            <label for="fromDate">📅</label>
-                            <input type="date" name="fromDate" id="fromDate" value="<?php echo date("Y-m-d"); ?>" required>
-                        </td>
-                        <td>
-                            <label for="fromTime">🕑</label>
-                            <input type="time" name="fromTime" id="fromTime" value="<?php echo date("H:i:s"); ?>" required>
+                            <input type="datetime-local" name="fromDateTime" id="fromDateTime" required>
+                            <input type="button" value="✖️" title="Un-set" onClick="document.getElementById('fromDateTime').value = undefined;">
+                            <input type="button" value="🕒" title="Set to now" onClick="document.getElementById('fromDateTime').value = getNowForDatetimeLocal();">
                         </td>
                     </tr>
                     <tr>
                         <td>Ende:</td>
                         <td>
-                            <label for="toDate">📅</label>
-                            <input type="date" name="toDate" id="toDate" value="<?php echo date("Y-m-d"); ?>" required>
-                        </td>
-                        <td>
-                            <label for="toTime">🕑</label>
-                            <input type="time" name="toTime" id="toTime" value="<?php echo date("H:i:s"); ?>" required>
+                            <input type="datetime-local" name="toDateTime" id="toDateTime" required>
+                            <input type="button" value="✖️" title="Un-set" onClick="document.getElementById('toDateTime').value = undefined;">
+                            <input type="button" value="🕒" title="Set to now" onClick="document.getElementById('toDateTime').value = getNowForDatetimeLocal();">
                         </td>
                     </tr>
                     <tr>
                         <td>Ort:</td>
                         <td>
-                            <label for="site">🗺️</label>
-                            <select name="site" id="site">
-<?php
-    $results = $db->query('SELECT * FROM sites ORDER BY name');
-    while ($row = $results->fetchArray()) {
-        echo "\t\t\t\t\t\t\t\t<option value=\"" . $row['id'] . "\">" . $row['name'] . "</option>" . $rn;
-    }
-?>
+                            <select name="optionsSite" id="optionsSite">
+                                <script type="text/javascript" language="javascript">
+                                    getOptionsSite();
+                                </script>
                             </select>
                         </td>
                         <td></td>
@@ -54,39 +48,26 @@
                     <tr>
                         <td>Typ:</td>
                         <td>
-                            <label for="workType">❓</label>
-                            <select name="workType" id="workType">
-<?php
-    $results = $db->query('SELECT * FROM workType ORDER BY name');
-    while ($row = $results->fetchArray()) {
-        echo "\t\t\t\t\t\t\t\t<option value=\"" . $row['id'] . "\">" . $row['name'] . "</option>" . $rn;
-    }
-?>
+                            <select name="optionsWorkType" id="optionsWorkType">
+                                <script type="text/javascript" language="javascript">
+                                    getOptionsWorkType();
+                                </script>
                             </select>
                         </td>
                         <td></td>
                     </tr>
- <!--                   
-                    <tr>
-                        <td></td>
-                        <td>
-                            <input type="submit" value=" 💾 Speichern">
-                        </td>
-                        <td></td>
-                    </tr>
--->
                     <tr>
                         <td></td>
                         <td>
                             <!-- call JavaScript function with parameters -->
-                            <input type="button" value=" 💾 Speichern" onClick="insertTrackedHours(
-                                document.getElementById('fromDate').value,
-                                document.getElementById('fromTime').value,
-                                document.getElementById('toDate').value,
-                                document.getElementById('toTime').value,
-                                document.getElementById('site').value,
-                                document.getElementById('workType').value
-                            );">
+                            <input type="button" value=" 💾 Speichern" onClick="insertSession(
+                                    document.getElementById('fromDateTime').value,
+                                    document.getElementById('toDateTime').value,
+                                    document.getElementById('optionsSite').value,
+                                    document.getElementById('optionsWorkType').value,
+                                    Date.now()
+                                );">
+                            <div id="result"></div>
                         </td>
                         <td></td>
                     </tr>
@@ -95,42 +76,10 @@
         </div>
         <div>
             <h1>Zeiterfassungen der letzten 30 Tage</h1>
-            <table>
-                <tr>
-                    <th>Datum</th>
-                    <th>Wochentag</th>
-                    <th>Blöcke</th>
-                    <th>IST</th>
-                    <th>SOLL</th>
-                    <th>Differenz</th>
-                    <th>Anzeigen</th>
-                </tr>
-<?php
-    $results = $db->query('SELECT * FROM v_TrackedHours ORDER BY date DESC');
-    while ($row = $results->fetchArray()) {
-        # print PHP object to browser's console
-        #echo '<script>';
-        #echo 'var row = ' . json_encode($row) . ';';
-        #echo 'console.log(row);';
-        #echo '</script>';
-
-
-        echo "\t\t\t\t<tr>" . $rn;
-        echo "\t\t\t\t\t<td>" . $row['date'] . "</td>" . $rn;
-        echo "\t\t\t\t\t<td>" . $row['dayOfWeek'] . "</td>" . $rn;
-        echo "\t\t\t\t\t<td>" . $row['blocks'] . "</td>" . $rn;
-        echo "\t\t\t\t\t<td>" . $row['trackedHoursPerDay'] . "</td>" . $rn;
-        echo "\t\t\t\t\t<td>" . $row['plannedHours'] . "</td>" . $rn;
-        echo "\t\t\t\t\t<td>" . 'DIFF' . "</td>" . $rn;
-        echo "\t\t\t\t\t<td><a href=\"showTrackedHours.php?date=" . $row['date'] . "\">➡️</a></td>" . $rn;
-        echo "\t\t\t\t</tr>" . $rn;
-    }
-?>
-            </table>
+            <script type="text/javascript" language="javascript">
+                getLatestSessionsGroupedByDay(30);
+            </script>
+            <div id="latestSessionsGroupedByDay">
         </div>
-        <dialog id="modalDialog" name="modalDialog" class="modalDialog">
-            <div id="modalDialogText" name="modalDialogText"></div>
-            <button autofocus onClick="modalDialog.close();">Close</button>
-        </dialog>
     </body>
 </html>

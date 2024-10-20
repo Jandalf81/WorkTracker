@@ -1,9 +1,20 @@
 #!/bin/bash
 
-rm WorkTracker.sqlite
+# set variables
+DATADIR="/srv/WorkTracker"
+SRCDIR="/home/pi/WorkTracker"
 
-sqlite3 WorkTracker.sqlite < ./SQLite3/CreateDatabase.sql
+# remove old file
+rm $DATADIR/WorkTracker.sqlite
 
-sqlite3 WorkTracker.sqlite < ./SQLite3/InsertTestdata.sql
+# create new file
+sqlite3 $DATADIR/WorkTracker.sqlite < $SRCDIR/SQLite3/1.CreateDatabase.sql
+sqlite3 $DATADIR/WorkTracker.sqlite < $SRCDIR/SQLite3/2.InsertData.sql
 
-chmod 777 WorkTracker.sqlite
+# set permissions
+chmod 777 $DATADIR
+chmod 777 $DATADIR/WorkTracker.sqlite
+
+# list folder and file
+ls $DATADIR/.. -l
+ls $DATADIR -l

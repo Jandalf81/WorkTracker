@@ -15,11 +15,11 @@
                     <th>Start</th>
                     <th>Ende</th>
                     <th>Ort</th>
-                    <th>Ändern<th>
+                    <th>Ändern</th>
                 </tr>
 <?php
     try {
-        $stmt = $db->prepare("SELECT * FROM trackedHours WHERE strftime('%Y-%m-%d', startedAt) = :date ORDER BY startedAt DESC;");
+        $stmt = $db->prepare("SELECT * FROM session WHERE strftime('%Y-%m-%d', startedAt) = :date ORDER BY startedAt DESC;");
         $stmt->bindValue(':date', $_GET['date'], SQLITE3_TEXT);
 
         #echo $stmt->getSQL($expanded = false) . $rn . "<br />";
