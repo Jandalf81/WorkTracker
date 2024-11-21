@@ -4,7 +4,7 @@
     header('Content-Type: application/json');
 
     try {
-        $stmt = $db->prepare("SELECT * FROM v_sessionsGroupedByDay ORDER BY date DESC LIMIT :limit");
+        $stmt = $db->prepare("SELECT * FROM v_sessionsGroupedByDay_Split ORDER BY date DESC LIMIT :limit");
         $stmt->bindValue(":limit", $_POST["limit"], SQLITE3_INTEGER);
         
         $results = $stmt->execute();
@@ -23,7 +23,8 @@
         $object->data = $object->data . "<th>Sessions</th>";
         $object->data = $object->data . "<th>IST-Stunden</th>";
         $object->data = $object->data . "<th>SOLL-Stunden</th>";
-        $object->data = $object->data . "<th>Differenz</th>";
+        $object->data = $object->data . "<th>DiffPositiv</th>";
+        $object->data = $object->data . "<th>DiffNegativ</th>";
         $object->data = $object->data . "<th>Anzeigen</th>";
         $object->data = $object->data . "</tr>";
 
@@ -34,19 +35,9 @@
             $object->data = $object->data . "<td>" . $row['sessions'] . "</td>";
             $object->data = $object->data . "<td>" . $row['trackedHoursTime'] . "</td>";
             $object->data = $object->data . "<td>" . $row['plannedHoursTime'] . "</td>";
-            
-            $number = $row['DiffSeconds'];
-            switch (true) {
-                case $number > 0:
-                    $object->data = $object->data . "<td class=\"positive\">" . $row['DiffTime'] . "</td>";
-                    break;
-                case $number < 0:
-                    $object->data = $object->data . "<td class=\"negative\">" . $row['DiffTime'] . "</td>";
-                    break;
-                case $number = 0:
-                    $object->data = $object->data . "<td>" . $row['DiffTime'] . "</td>";
-                    break;
-            }
+
+            $object->data = $object->data . "<td>" . $row['DiffPositive'] . "</td>";
+            $object->data = $object->data . "<td>" . $row['DiffNegative'] . "</td>";
             
             $object->data = $object->data . "<td><a href=\"showTrackedHours.php?date=" . $row['date'] . "\">➡️</a></td>";
             $object->data = $object->data . "</tr>";
